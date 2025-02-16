@@ -22,7 +22,7 @@ export default function MenuPage() {
     // ------
 
     const postFormData = async () => { // sends post request to add data entered into input fields to API/json server
-        const response = await fetch('http://localhost:3000/menu', {
+        const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
@@ -33,7 +33,7 @@ export default function MenuPage() {
     }
 
     const deleteMenuItem = async (idToDelete: number) => { // filters out item to delete it from the API
-        await fetch(`http://localhost:3000/menu/${idToDelete}`, {
+        await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu/${idToDelete}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -55,7 +55,7 @@ export default function MenuPage() {
 
     const fetchData = async () => { // get request to fetch menu items, stores in setGetDataFromAPI varibale
         setLoading(true)
-        const response = await fetch('http://localhost:3000/menu', {
+        const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })

@@ -11,7 +11,7 @@ export default function ContactPage() {
     const [loading, setLoading] = useState(false)
 
     const contactPost = async (newPerson: ContactList) => { // post request to add a new person to API
-        const response = await fetch(`http://localhost:3000/contacts`, {
+        const response = await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newPerson)
@@ -24,7 +24,7 @@ export default function ContactPage() {
 
     const contactFormData = async () => { // sets loading to true while fetching, grabs data from API, sets loading to false and sets "setsContactForm" to data retreived
         setLoading(true)
-        const response = await fetch('http://localhost:3000/contacts', {
+        const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json'},
         })
@@ -36,9 +36,10 @@ export default function ContactPage() {
     useEffect(() => {
         contactFormData()
     }, [])
+    
 
     const updateConctactInfo = async (updateContact: ContactList) => {  // put request to update a contact's information. uses map method to iterate over each item in the array replacing the old data with the new. Uses ID to find correct one
-        const response = await fetch(`http://localhost:3000/contacts/${updateContact.id}`, {
+        const response = await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts/${updateContact.id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateContact)
@@ -50,7 +51,7 @@ export default function ContactPage() {
     }
 
     const deleteContact = async (idToDelete: number) => { // delete request. creates a copy of the old array and filters then returns everything that is NOT equal to the ID selected. 
-            await fetch(`http://localhost:3000/contacts/${idToDelete}`, {
+            await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts/${idToDelete}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json'}
         })
