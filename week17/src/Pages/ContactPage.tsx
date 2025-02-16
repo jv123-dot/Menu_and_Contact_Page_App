@@ -9,6 +9,7 @@ export default function ContactPage() {
 
     const [contactForm, setContactForm] = useState<ContactList[]>([]) // initializes state with an empty array in shape of ContactList
     const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const contactPost = async (newPerson: ContactList) => { // post request to add a new person to API
         const response = await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts`, {
@@ -22,20 +23,28 @@ export default function ContactPage() {
     }
 
 
-    const contactFormData = async () => { // sets loading to true while fetching, grabs data from API, sets loading to false and sets "setsContactForm" to data retreived
-        setLoading(true)
-        const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json'},
-        })
-        const data = await response.json()
-        setContactForm(data)
-        console.log(data)
-        setLoading(false)
-    }
-    useEffect(() => {
+    useEffect(() => { // sets loading to true while fetching, grabs data from API, sets loading to false and sets "setsContactForm" to data retreived. Runs error message if fails
+        const contactFormData = async () => {
+            setLoading(true)
+            try {
+                const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/contacts', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                if(!response.ok) {
+                    setErrorMessage("There was an error: " + response.statusText)
+                } else {
+                    const data = await response.json()
+                    setContactForm(data)
+                }
+            } catch(error: any) {
+                setErrorMessage("There was an error: " + error.message)
+            }
+            setLoading(false)
+        }
         contactFormData()
     }, [])
+
     
 
     const updateConctactInfo = async (updateContact: ContactList) => {  // put request to update a contact's information. uses map method to iterate over each item in the array replacing the old data with the new. Uses ID to find correct one
@@ -62,7 +71,7 @@ export default function ContactPage() {
     return ( // renders the components 
         <>  
             <ContactPageModal  contactPost={contactPost} />
-            <ContactCardComponent deleteContact={deleteContact} loading={loading} contactForm={contactForm} updateContactInfo={updateConctactInfo}/>
+            <ContactCardComponent errorMessage={errorMessage} deleteContact={deleteContact} loading={loading} contactForm={contactForm} updateContactInfo={updateConctactInfo}/>
         </>
     )
 }

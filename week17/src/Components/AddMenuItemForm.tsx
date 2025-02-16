@@ -28,7 +28,7 @@ export default function AddMenuItemForm({ handleSubmit, handleChange, formData }
                 <input
                     className="form-control mb-3"
                     type="text"
-                    placeholder="e.g. 10.00"
+                    placeholder="e.g. 10.99"
                     name="price"
                     value={formData.price}
                     onChange={handleChange}

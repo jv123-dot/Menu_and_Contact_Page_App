@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import MenuDeleteModule from "../Components/MenuDeleteModule"
 import AddMenuItemForm from "../Components/AddMenuItemForm";
 
-const initialState = { 
+const initialState = {
     name: '',
     ingredients: '',
     price: ''
 }
 
-type MenuItem = { 
+type MenuItem = {
     id: number;
     name: string;
     ingredients: string[]
@@ -19,6 +19,7 @@ export default function MenuPage() {
     const [formData, setFormData] = useState(initialState) // state variable to keep track of data entered into form input fields used create a new menu item
     const [loading, setLoading] = useState(false) // keeps track of whether data is being fetched or not
     const [getFromAPI, setGetFromAPI] = useState<MenuItem[]>([]); // stores menu items fetched from API 
+    const [errorMessage, setErrorMessage] = useState('')
     // ------
 
     const postFormData = async () => { // sends post request to add data entered into input fields to API/json server
@@ -32,13 +33,29 @@ export default function MenuPage() {
         setGetFromAPI(previousMenu => [...previousMenu, newMenuItem])
     }
 
-    const deleteMenuItem = async (idToDelete: number) => { // filters out item to delete it from the API
-        await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu/${idToDelete}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        setGetFromAPI(prev => prev.filter(item => item.id !== idToDelete));
-    };
+
+     
+    const deleteMenuItem = async (idToDelete: number, nameToDelete: string) => { // filters out item to delete it from the API. Error handling if it fails
+        if(!idToDelete) {
+            setErrorMessage('Id not found ' + errorMessage)
+        }
+        try {
+            const response = await fetch(`https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu/${idToDelete}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json'}
+            })
+
+            if(!response.ok) {
+                setErrorMessage(`Failed to delete ${nameToDelete}  ` + errorMessage)
+            } else {
+                 setGetFromAPI(prev => prev.filter(item => item.id !==idToDelete))
+            } 
+        } catch (error: any) {
+                console.error('error during delete,', error)
+                setErrorMessage("There was an error: " + error.message)
+            }
+        }
+    
 
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => { // 
@@ -52,46 +69,54 @@ export default function MenuPage() {
     }
 
     // -------------------
+ 
+    useEffect(() => { // get request to fetch menu items, stores in setGetDataFromAPI varibale. Error message if fails
+        const fetchData = async () => {
+            setLoading(true)
+            try {
+                const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                if (!response.ok) {
+                    setErrorMessage( "There was an error: " + response.statusText)
+                } else {
+                    const data = await response.json()
+                    setGetFromAPI(data)
+                }
 
-    const fetchData = async () => { // get request to fetch menu items, stores in setGetDataFromAPI varibale
-        setLoading(true)
-        const response = await fetch('https://67a7ef99203008941f68d4a4.mockapi.io/mockAPI/menu', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        })
-        const data = await response.json()
-        setGetFromAPI(data)
-        setLoading(false)
-    }
-
-    useEffect(() => {
+            } catch (error: any) {
+                setErrorMessage("There was an error: " + error.message)
+            }
+            setLoading(false)
+        }
         fetchData()
     }, [])
 
 
 
-    return ( // renders AddMenuItemForm 
+    return ( 
         <>
-            <div className="container d-flex flex-column p-5 mx-auto"> 
+            <div className="container d-flex flex-column p-5 mx-auto">
                 <div className="row g-4">
                     <div className="col-md-6">
-                        <div className="card p-3"> 
-                            <AddMenuItemForm formData={formData} handleSubmit={handleSubmit} handleChange={handleChange} /> 
+                        <div className="card p-3">
+                            <AddMenuItemForm formData={formData} handleSubmit={handleSubmit} handleChange={handleChange} />
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div className="card p-3">
-                        <h1 className="text-center mb-4">Sandwiches</h1>
+                            <h1 className="text-center mb-4">Sandwiches</h1>
                             <div className="row g-4">
-                                {loading ? (
-                                    <p className="text-body-tertiary">Loading Menu...</p>
-                                ) : (
-                                    getFromAPI.map((menu) => (
-                                        <div className="col-md-6" key={menu.id}>
+                                {
+                                loading ? <p className="text-body-tertiary">Loading Menu...</p> :
+                                errorMessage ? <p className="text-danger">{errorMessage}</p> :
+                                    getFromAPI.map((menu) => ( // Uses map() to create a card for each item/object from API. Creates a delete button for each card as well
+                                        <div className="col-md-6" key={menu.id}> 
                                             <div className="card p-3">
                                                 <p><strong>{menu.name} - ${menu.price}</strong></p>
                                                 <p>{menu.ingredients}</p>
-                                                <MenuDeleteModule deleteMenuItem={() => deleteMenuItem(menu.id)} // renders menu from getFromAPI. Uses map() to create a card for each item. Creates a delete button for each card as well
+                                                <MenuDeleteModule deleteMenuItem={() => deleteMenuItem(menu.id, menu.name)}
                                                     menuName={menu.name}
                                                     menuIngredients={menu.ingredients}
                                                     menuPrice={menu.price}
@@ -99,7 +124,7 @@ export default function MenuPage() {
                                             </div>
                                         </div>
                                     ))
-                                )}
+                                }
                             </div>
                         </div>
                     </div>

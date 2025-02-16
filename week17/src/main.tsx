@@ -8,12 +8,14 @@ import MenuPage from './Pages/Menupage.tsx'
 import HomePage from './Pages/HomePage.tsx'
 import ErrorPage from './Pages/ErrorPage.tsx'
 import ContactPage from './Pages/ContactPage.tsx'
+import Errors from './Components/Errors.tsx'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root/>,
+    errorElement: <Errors/>,
     children: [
       {
         path: "/",
