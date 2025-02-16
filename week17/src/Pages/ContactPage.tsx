@@ -7,10 +7,10 @@ import '../App.css'
 
 export default function ContactPage() {
 
-    const [contactForm, setContactForm] = useState<ContactList[]>([])
+    const [contactForm, setContactForm] = useState<ContactList[]>([]) // initializes state with an empty array in shape of ContactList
     const [loading, setLoading] = useState(false)
 
-    const contactPost = async (newPerson: ContactList) => {
+    const contactPost = async (newPerson: ContactList) => { // post request to add a new person to API
         const response = await fetch(`http://localhost:3000/contacts`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -22,7 +22,7 @@ export default function ContactPage() {
     }
 
 
-    const contactFormData = async () => {
+    const contactFormData = async () => { // sets loading to true while fetching, grabs data from API, sets loading to false and sets "setsContactForm" to data retreived
         setLoading(true)
         const response = await fetch('http://localhost:3000/contacts', {
             method: 'GET',
@@ -37,19 +37,19 @@ export default function ContactPage() {
         contactFormData()
     }, [])
 
-    const updateConctactInfo = async (updateContact: ContactList) => {
+    const updateConctactInfo = async (updateContact: ContactList) => {  // put request to update a contact's information. uses map method to iterate over each item in the array replacing the old data with the new. Uses ID to find correct one
         const response = await fetch(`http://localhost:3000/contacts/${updateContact.id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateContact)
         })
         const updatedContactData = await response.json()
-        setContactForm(previousPage => previousPage.map(contact =>
+        setContactForm(oldInfo => oldInfo.map(contact =>
             contact.id === updatedContactData.id ? updatedContactData : contact
         ))
     }
 
-    const deleteContact = async (idToDelete: number) => {
+    const deleteContact = async (idToDelete: number) => { // delete request. creates a copy of the old array and filters then returns everything that is NOT equal to the ID selected. 
             await fetch(`http://localhost:3000/contacts/${idToDelete}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json'}
@@ -58,7 +58,7 @@ export default function ContactPage() {
     }
 
 
-    return (
+    return ( // renders the components 
         <>  
             <ContactPageModal  contactPost={contactPost} />
             <ContactCardComponent deleteContact={deleteContact} loading={loading} contactForm={contactForm} updateContactInfo={updateConctactInfo}/>

@@ -8,10 +8,9 @@ export default function HomePageCards() {
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={bananas} />
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title>Card One</Card.Title>
                     <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum consequuntur quibusdam illo repudiandae odit deserunt.
                     </Card.Text>
                     <Button variant="dark">More info</Button>
                 </Card.Body>
@@ -21,10 +20,9 @@ export default function HomePageCards() {
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={bananas} />
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title>Card Two</Card.Title>
                     <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil iusto ex nobis sit optio eaque, facere impedit nisi tempore pariatur rem, deleniti quo soluta enim.
                     </Card.Text>
                     <Button variant="dark">More info</Button>
                 </Card.Body>
@@ -34,10 +32,9 @@ export default function HomePageCards() {
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={bananas} />
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title>Card Three</Card.Title>
                     <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum consequuntur quibusdam illo repudiandae odit deserunt.
                     </Card.Text>
                     <Button variant="dark">More info</Button>
                 </Card.Body>

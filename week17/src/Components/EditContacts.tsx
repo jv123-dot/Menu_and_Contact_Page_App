@@ -10,16 +10,16 @@ type EditContactsProps = {
 }
 
 export default function EditContacts({updateContactInfo, contact, deleteContact}: EditContactsProps) {
-   const [isModalOpen, setIsModalOpen] = useState(false)
-   const [isFormInputOpen, setIsFormInputOpen] = useState(false)
-   const [updatedContact, setUpdateContact] = useState(contact)
+   const [isModalOpen, setIsModalOpen] = useState(false) // keeps track of modal state
+   const [isFormInputOpen, setIsFormInputOpen] = useState(false) // keeps track of the form's state
+   const [updatedContact, setUpdateContact] = useState(contact) 
        
    
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { 
         setUpdateContact({...updatedContact, [e.target.name]: e.target.value})
    }
 
-   const handleSubmit = () => {
+   const handleSubmit = () => { // runs when presses 'save' button, called updateContactInfo function that was passed down as a prop to update the contact info, closes modal, and resets form
         updateContactInfo(updatedContact)
         setIsModalOpen(false)
         setUpdateContact({
@@ -35,12 +35,12 @@ export default function EditContacts({updateContactInfo, contact, deleteContact}
         setIsFormInputOpen(true)
    }
 
-   const handleClose = () => {
+   const handleClose = () => { // closes modal and input when button calling handleClose function is clicked
         setIsModalOpen(false)
         setIsFormInputOpen(false)
    }
 
-   useEffect(() => {
+   useEffect(() => { // runs when contact changes to make sure it matches data
         setUpdateContact(contact)
    }, [contact])
    
@@ -52,7 +52,7 @@ export default function EditContacts({updateContactInfo, contact, deleteContact}
                 <Modal.Title>Manage Contacts</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {!isFormInputOpen && (
+                {!isFormInputOpen && ( // if "isFormInputOpen" is false it displays edit and delete button, if true it shows the label and input fields
                     <div className="d-flex align-items-center">
                         <div>
                             <Button variant="dark" onClick={handleEdit}>Edit</Button>

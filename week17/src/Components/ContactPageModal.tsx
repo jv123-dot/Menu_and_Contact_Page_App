@@ -11,9 +11,9 @@ type ContactPageModal = {
 
 
 export default function ContactPageModal({ contactPost }: ContactPageModal) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isFormInputOpen, setIsFormInputOpen] = useState(false)
-  const [formData, setFormData] = useState<ContactList>({
+  const [isModalOpen, setIsModalOpen] = useState(false) // keeps track of modal state, open or closed
+  const [isFormInputOpen, setIsFormInputOpen] = useState(false) // keeps track of form inputs state, whether to show or hide
+  const [formData, setFormData] = useState<ContactList>({ // 
     name: '',
     phone: '',
     email: '',
@@ -23,7 +23,7 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
 
 
 
-  const handleSubmit = () => {
+  const handleSubmit = () => { // sends new data to API, changes modal and form input state to false, clears form
     contactPost(formData);
     setIsModalOpen(false);
     handleClear();
@@ -34,15 +34,12 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
 
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { // updates formdata state to whatever is typed into input fields
+    setFormData({...formData, [e.target.name]: e.target.value})
+    
   };
 
-  const handleClear = () => {
+  const handleClear = () => { // clears form when function is called 
     setFormData({
       name: '',
       phone: '',
@@ -53,12 +50,12 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
   };
 
 
-  const handleEdit = () => {
+  const handleEdit = () => { 
     setIsFormInputOpen(true)
 
   }
 
-  const handleClose = () => {
+  const handleClose = () => { // closes modal, clears form and input fields when called
     setIsModalOpen(false)
     handleClear()
     setIsFormInputOpen(false)
@@ -93,7 +90,7 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
                     onChange={handleChange} />
                 </div>
                 <div>
-                  <label><strong>Name</strong></label>
+                  <label><strong>Phone</strong></label>
                   <input className='form-control mb-2'
                     type="text"
                     name="phone"
@@ -102,7 +99,7 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
                     onChange={handleChange} />
                 </div>
                 <div>
-                  <label><strong>Name</strong></label>
+                  <label><strong>Email</strong></label>
                   <input
                     className='form-control mb-2'
                     type="text"
@@ -112,7 +109,7 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
                     onChange={handleChange} />
                 </div>
                 <div>
-                  <label><strong>Name</strong></label>
+                  <label><strong>Position</strong></label>
                   <input
                     className='form-control mb-2'
                     type="text"
@@ -122,7 +119,7 @@ export default function ContactPageModal({ contactPost }: ContactPageModal) {
                     onChange={handleChange} />
                 </div>
                 <div>
-                  <label><strong>Name</strong></label>
+                  <label><strong>Info</strong></label>
                   <textarea
                     className='form-control mb-2'
                     name="information"

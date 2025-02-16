@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import MenuDeleteModule from "../Components/MenuDeleteModule"
 import AddMenuItemForm from "../Components/AddMenuItemForm";
 
-const initialState = {
+const initialState = { 
     name: '',
     ingredients: '',
     price: ''
 }
 
-type MenuItem = {
+type MenuItem = { 
     id: number;
     name: string;
     ingredients: string[]
@@ -16,12 +16,12 @@ type MenuItem = {
 };
 
 export default function MenuPage() {
-    const [formData, setFormData] = useState(initialState)
-    const [loading, setLoading] = useState(false)
-    const [getFromAPI, setGetFromAPI] = useState<MenuItem[]>([]);
+    const [formData, setFormData] = useState(initialState) // state variable to keep track of data entered into form input fields used create a new menu item
+    const [loading, setLoading] = useState(false) // keeps track of whether data is being fetched or not
+    const [getFromAPI, setGetFromAPI] = useState<MenuItem[]>([]); // stores menu items fetched from API 
     // ------
 
-    const postFormData = async () => {
+    const postFormData = async () => { // sends post request to add data entered into input fields to API/json server
         const response = await fetch('http://localhost:3000/menu', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -32,7 +32,7 @@ export default function MenuPage() {
         setGetFromAPI(previousMenu => [...previousMenu, newMenuItem])
     }
 
-    const deleteMenuItem = async (idToDelete: number) => {
+    const deleteMenuItem = async (idToDelete: number) => { // filters out item to delete it from the API
         await fetch(`http://localhost:3000/menu/${idToDelete}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
@@ -41,11 +41,11 @@ export default function MenuPage() {
     };
 
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => { // 
         setFormData({ ...formData, [event.target.name]: event.target.value })
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => { // calls PostFormData function to execute the POST request and resets form/input fields
         event.preventDefault()
         postFormData()
         setFormData(initialState)
@@ -53,7 +53,7 @@ export default function MenuPage() {
 
     // -------------------
 
-    const fetchData = async () => {
+    const fetchData = async () => { // get request to fetch menu items, stores in setGetDataFromAPI varibale
         setLoading(true)
         const response = await fetch('http://localhost:3000/menu', {
             method: 'GET',
@@ -70,13 +70,13 @@ export default function MenuPage() {
 
 
 
-    return (
+    return ( // renders AddMenuItemForm 
         <>
-            <div className="container d-flex flex-column p-5 mx-auto">
+            <div className="container d-flex flex-column p-5 mx-auto"> 
                 <div className="row g-4">
                     <div className="col-md-6">
-                        <div className="card p-3">
-                            <AddMenuItemForm formData={formData} handleSubmit={handleSubmit} handleChange={handleChange} />
+                        <div className="card p-3"> 
+                            <AddMenuItemForm formData={formData} handleSubmit={handleSubmit} handleChange={handleChange} /> 
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -91,7 +91,7 @@ export default function MenuPage() {
                                             <div className="card p-3">
                                                 <p><strong>{menu.name} - ${menu.price}</strong></p>
                                                 <p>{menu.ingredients}</p>
-                                                <MenuDeleteModule deleteMenuItem={() => deleteMenuItem(menu.id)}
+                                                <MenuDeleteModule deleteMenuItem={() => deleteMenuItem(menu.id)} // renders menu from getFromAPI. Uses map() to create a card for each item. Creates a delete button for each card as well
                                                     menuName={menu.name}
                                                     menuIngredients={menu.ingredients}
                                                     menuPrice={menu.price}
