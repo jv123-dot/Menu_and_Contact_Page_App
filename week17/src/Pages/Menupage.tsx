@@ -70,7 +70,7 @@ export default function MenuPage() {
 
     // -------------------
  
-    useEffect(() => { // get request to fetch menu items, stores in setGetDataFromAPI varibale. Error message if fails
+    useEffect(() => { // get request to fetch menu items, stores in "data" set state variable setGetDataFromAPI to data. Error message if fails
         const fetchData = async () => {
             setLoading(true)
             try {
