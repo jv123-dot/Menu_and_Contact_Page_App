@@ -21,6 +21,7 @@ export default function EditContacts({updateContactInfo, contact, deleteContact}
 
    const handleSubmit = () => { // runs when presses 'save' button, called updateContactInfo function that was passed down as a prop to update the contact info, closes modal, and resets form
         updateContactInfo(updatedContact)
+        setIsFormInputOpen(false)
         setIsModalOpen(false)
         setUpdateContact({
             name: '',
